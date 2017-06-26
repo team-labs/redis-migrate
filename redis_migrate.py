@@ -151,11 +151,12 @@ def main():
     from_db = args.from_database
     to_db = args.to_database
     from_redis = redis.StrictRedis(host=from_host, port=from_port, db=from_db)
+    
     keys = get_keys(from_redis)
     key_types = get_key_types(from_redis, keys)
     values = get_values(from_redis, keys, key_types) 
-
     data = map_data(keys, values, key_types)
+    
     to_redis = redis.StrictRedis(host=to_host, port=to_port, db=to_db)
     success_values = migrate_data(to_redis, data)
     success = check_success(success_values)
